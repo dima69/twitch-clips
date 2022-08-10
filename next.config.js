@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["clips-media-assets2.twitch.tv"],
+    domains: ["clips-media-assets2.twitch.tv", "static-cdn.jtvnw.net"],
   },
 };
 

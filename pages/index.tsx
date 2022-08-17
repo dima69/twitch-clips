@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import Image from "next/future/image";
 import useSWR from "swr";
@@ -123,22 +122,20 @@ const UserClips = ({ user_id }: { user_id: string }) => {
 const UserCard = ({ user }: { user: UsersFollows }) => {
   return (
     <>
-      <div className="flex max-w-max my-1 py-1 ">
-        <a
-          className="flex items-center font-semibold text-3xl hover:underline underline-offset-8 decoration-wavy w-max decoration-red-500"
-          href={`https://twitch.tv/${user.login}`}
-        >
-          <Image
-            src={user.profile_image_url}
-            height={64}
-            width={64}
-            alt=""
-            className="rounded-full"
-          />
-          <span className="ml-2">{user.display_name}</span>
-        </a>
-        {/* @@@ onlybans here */}
-      </div>
+      <a
+        className="flex my-1  py-1 w-full overflow-auto items-center font-semibold text-3xl hover:underline underline-offset-8 decoration-wavy decoration-red-500"
+        href={`https://twitch.tv/${user.login}`}
+      >
+        <Image
+          src={user.profile_image_url}
+          height={64}
+          width={64}
+          alt=""
+          className="rounded-full mr-2"
+        />
+        <span>{user.display_name}</span>
+      </a>
+      {/* @@@ onlybans here */}
       <UserClips user_id={user.id} />
     </>
   );

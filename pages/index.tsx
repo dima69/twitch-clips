@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import Image from "next/future/image";
 import useSWR from "swr";
 import {
   PeopleIcon,
@@ -75,7 +76,7 @@ const UserClips = ({ user_id }: { user_id: string }) => {
             alt=""
             width={480}
             height={272}
-            layout="responsive"
+            style={{width: '100%', height: 'auto'}}
           />
           <div className="absolute top-0 left-0 m-2 bg-black text-white px-1 py-0.5 text-sm rounded">
             {secondsToTime(clip.duration)}

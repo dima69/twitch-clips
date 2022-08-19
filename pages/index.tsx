@@ -119,7 +119,7 @@ const UserClips = ({ user_id }: { user_id: string }) => {
   return <div className="grid grid-cols-custom_300_1fr gap-5">{something}</div>;
 };
 
-const UserCard = ({ user }: { user: UsersFollows }) => {
+const UserCard = ({ user }: { user: IUserFollow }) => {
   return (
     <>
       <a
@@ -142,7 +142,7 @@ const UserCard = ({ user }: { user: UsersFollows }) => {
 };
 
 // @@@ rename it
-interface UsersFollows {
+interface IUserFollow {
   id: string;
   login: string;
   display_name: string;
@@ -220,7 +220,7 @@ const SideBar = ({
 
 const Home: NextPage = () => {
   const [isSidebarOpened, setIsSidebarOpened] = useState<boolean>(false);
-  const [selectedUserId, setSelectedUserId] = useState<UsersFollows>();
+  const [selectedUserId, setSelectedUserId] = useState<IUserFollow>();
 
   const sideMenuOpenCloseButtonHandler = () => {
     setIsSidebarOpened((value) => !value);

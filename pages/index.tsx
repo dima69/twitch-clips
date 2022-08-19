@@ -116,7 +116,7 @@ const UserClips = ({ user_id }: { user_id: string }) => {
   //   )
   // );
 
-  return <div className="grid grid-cols-custom gap-5">{something}</div>;
+  return <div className="grid grid-cols-custom_300_1fr gap-5">{something}</div>;
 };
 
 const UserCard = ({ user }: { user: UsersFollows }) => {

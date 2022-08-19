@@ -43,7 +43,7 @@ interface IClip {
 const UserClips = ({ user_id }: { user_id: string }) => {
   const { data, error } = useSWR(user_id, getClips);
 
-  if (error) return <span>An error has occurred.</span>;
+  if (error) return <span>Clips An error has occurred.</span>;
   if (!data) return <span>Clips Loading...</span>;
 
   if (!data.data.length) {

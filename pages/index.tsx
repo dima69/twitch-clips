@@ -40,6 +40,10 @@ interface IClip {
   vod_offset: null;
 }
 
+interface IClipsListResponse {
+  data: IClip[];
+}
+
 const UserClips = ({ user_id }: { user_id: string }) => {
   const { data, error } = useSWR(user_id, getClips);
 
@@ -155,25 +159,22 @@ interface IUserFollow {
   created_at: string;
 }
 
+interface IUserFollowsListResponse {
+  data: IUserFollow[];
+}
+
 const SideBar = ({
   isOpened,
   onUserClick,
+  userFollowsListData,
 }: {
   isOpened: boolean;
-  onUserClick: any;
+  onUserClick: Function;
+  userFollowsListData: IUserFollowsListResponse;
 }) => {
-  // @@@
-  const { data, error } = useSWR("467997239", getUserFollows);
-  if (error) return <span>An error has occurred.</span>;
-  if (!data)
+  if (!userFollowsListData) {
     return (
-      <nav
-        className={
-          isOpened
-            ? "fixed md:static md:block z-50 md:max-w-max bg-gray-100 h-full"
-            : "hidden md:block md:w-11 h-full bg-gray-100"
-        }
-      >
+      <nav className="hidden md:block md:w-11 h-full bg-gray-100">
         <div className="flex flex-col">
           <div className="flex my-1">
             <div className="px-1 py-1 w-full">
@@ -183,6 +184,9 @@ const SideBar = ({
         </div>
       </nav>
     );
+  }
+  // @@@ handle it properly
+  // if (usersFollowsList.error) return <span>An error has occurred.</span>;
 
   return (
     <nav
@@ -194,7 +198,7 @@ const SideBar = ({
     >
       <div className="flex flex-col">
         {/* @@@ sort it */}
-        {data.map((user: UsersFollows) => (
+        {userFollowsListData.data.map((user) => (
           <div key={user.id} className="flex my-1">
             <button
               className="hover:bg-yellow-300 px-1 py-1 w-full flex items-center"
@@ -219,12 +223,15 @@ const SideBar = ({
 };
 
 const Home: NextPage = () => {
+  const { data, error } = useSWR("467997239", getUserFollows);
   const [isSidebarOpened, setIsSidebarOpened] = useState<boolean>(false);
   const [selectedUserId, setSelectedUserId] = useState<IUserFollow>();
 
   const sideMenuOpenCloseButtonHandler = () => {
     setIsSidebarOpened((value) => !value);
   };
+
+  if (error) return <span>{error}</span>;
 
   return (
     <div className="flex flex-col">
@@ -234,13 +241,12 @@ const Home: NextPage = () => {
             <button
               onClick={sideMenuOpenCloseButtonHandler}
               title="FOLLOWED CHANNELS"
-              // @@@ disable hover on mobile devices md:hover:bg-yellow-400
-              className="flex items-center rounded px-1 mr-2 text-center bg-yellow-300 hover:bg-yellow-400"
+              className="flex items-center rounded px-1 w-8 h-8 mr-2 text-center bg-yellow-300 md:hover:bg-yellow-400"
             >
               {isSidebarOpened ? <CloseIcon /> : <PeopleIcon />}
             </button>
           </div>
-          {/* search */}
+          {/* @@@ search */}
           <div className="flex w-96">
             <input
               type="text"
@@ -251,14 +257,18 @@ const Home: NextPage = () => {
               <SearchIcon />
             </button>
           </div>
-          {/* twitch auth button */}
+          {/* @@@ twitch auth button */}
           <div></div>
         </div>
       </header>
       {/* ESC key close event */}
       {/* transition css */}
       <div className="flex h-[calc(100vh-3rem)]">
-        <SideBar isOpened={isSidebarOpened} onUserClick={setSelectedUserId} />
+        <SideBar
+          isOpened={isSidebarOpened}
+          onUserClick={setSelectedUserId}
+          userFollowsListData={data}
+        />
 
         <main className="flex flex-col flex-1 overflow-auto px-2">
           {selectedUserId ? (
@@ -266,12 +276,51 @@ const Home: NextPage = () => {
               <UserCard user={selectedUserId} />
             </div>
           ) : (
-            <div>@@@ grid with user follows</div>
+            <div className="mx-auto">
+              {data ? (
+                <UsersGrid
+                  userFollowsListData={data}
+                  onClick={setSelectedUserId}
+                />
+              ) : (
+                // @@@
+                <LoadingSpinnerIcon />
+              )}
+            </div>
           )}
         </main>
       </div>
     </div>
   );
+};
+
+const UsersGrid = ({
+  userFollowsListData,
+  onClick,
+}: {
+  userFollowsListData: IUserFollowsListResponse;
+  onClick: Function;
+}) => {
+  const { data } = userFollowsListData;
+  const something = data.map((user: IUserFollow) => (
+    <button
+      key={user.id}
+      className="flex items-center p-2 hover:ring-2 ring-yellow-300 rounded"
+      onClick={() => onClick(user)}
+    >
+      <Image
+        src={user.profile_image_url}
+        height={46}
+        width={46}
+        className="rounded-full"
+        alt=""
+      />
+      <span className="font-medium ml-4 text-lg truncate">
+        {user.display_name}
+      </span>
+    </button>
+  ));
+  return <div className="flex flex-col">{something}</div>;
 };
 
 export default Home;

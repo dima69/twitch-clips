@@ -8,6 +8,7 @@ import {
   SearchIcon,
   LoadingSpinnerIcon,
 } from "../assets/icons";
+import { Dialog } from "@headlessui/react";
 
 const getClips = (user_id: string) => {
   console.log("getClips called");

@@ -69,7 +69,7 @@ const UserClips = ({ user_id }: { user_id: string }) => {
       <div className="relative ">
         <div className="absolute bg-yellow-300 w-full h-full -z-10"></div>
         {/* disable translate on mobile */}
-        <div className="hover:-translate-y-2 hover:translate-x-2 transition-all">
+        <div className="md:hover:-translate-y-2 md:hover:translate-x-2 transition-all">
           <Image
             src={clip.thumbnail_url}
             alt=""

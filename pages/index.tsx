@@ -64,7 +64,7 @@ const UserClips = ({ user_id }: { user_id: string }) => {
     return new Date(time).toLocaleDateString();
   }
 
-  const something = data.data.map((clip) => (
+  const something = data.data.map((clip: IClip) => (
     <div key={clip.id}>
       <div className="relative ">
         <div className="absolute bg-yellow-300 w-full h-full -z-10"></div>

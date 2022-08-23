@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/future/image";
 import useSWR from "swr";
 import {
@@ -73,7 +73,6 @@ const UserClips = ({ user_id }: { user_id: string }) => {
     <div key={clip.id}>
       <div className="relative ">
         <div className="absolute bg-yellow-300 w-full h-full -z-10"></div>
-        {/* disable translate on mobile */}
         <div className="md:hover:-translate-y-2 md:hover:translate-x-2 transition-all">
           <Image
             src={clip.thumbnail_url}
@@ -107,20 +106,6 @@ const UserClips = ({ user_id }: { user_id: string }) => {
       </div>
     </div>
   ));
-
-  // const something2 = data.data.map(
-  //   (clip: { id: string; embed_url: string }) => (
-  //     <iframe
-  //       key={clip.id}
-  //       src={`${clip.embed_url}&parent=localhost`}
-  //       frameBorder="0"
-  //       width={720}
-  //       height={500}
-  //       // preload="metadata"
-  //     ></iframe>
-  //   )
-  // );
-
   return <div className="grid grid-cols-custom_300_1fr gap-5">{something}</div>;
 };
 
@@ -128,7 +113,7 @@ const UserCard = ({ user }: { user: IUserFollow }) => {
   return (
     <>
       <a
-        className="flex my-1  py-1 w-full overflow-auto items-center font-semibold text-3xl hover:underline underline-offset-8 decoration-wavy decoration-red-500"
+        className="flex my-1 py-1 w-full overflow-auto items-center font-semibold text-3xl hover:underline underline-offset-8 decoration-wavy decoration-red-500"
         href={`https://twitch.tv/${user.login}`}
       >
         <Image

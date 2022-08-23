@@ -193,8 +193,8 @@ const SideBar = ({
     <nav
       className={
         isOpened
-          ? "fixed md:static md:block z-50 md:max-w-max bg-gray-100 h-full"
-          : "hidden md:block md:w-11 h-full bg-gray-100"
+          ? "fixed md:static md:block z-50 md:max-w-max bg-gray-100 h-full overflow-y-auto no-scrollbar"
+          : "hidden md:block md:w-11 h-full bg-gray-100 overflow-y-auto no-scrollbar"
       }
     >
       <div className="flex flex-col">

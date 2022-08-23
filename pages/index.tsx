@@ -45,13 +45,102 @@ interface IClipsListResponse {
   data: IClip[];
 }
 
-const UserClips = ({ user_id }: { user_id: string }) => {
-  const { data, error } = useSWR(user_id, getClips);
+const getClipVideoUrl = async (clipId: string) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Client-Id", "kimne78kx3ncx6brgo4mv6wki5h1ko");
+  myHeaders.append("Content-Type", "application/json");
 
-  if (error) return <span>Clips An error has occurred.</span>;
-  if (!data) return <span>Clips Loading...</span>;
+  const graphql = JSON.stringify({
+    query: `
+      query ClipPlayer_Query(
+      $slug: ID!
+      $playerType: String!
+      $platform: String!
+      $skipPlayToken: Boolean!
+    ) {
+      ...ClipPlayer_token
+    }
+    
+    fragment ClipPlayer_token on Query {
+      clip(slug: $slug) {
+        slug
+        playbackAccessToken(params: {platform: $platform, playerType: $playerType}) @skip(if: $skipPlayToken) {
+          signature
+          value
+          expiresAt
+          authorization {
+            isForbidden
+            forbiddenReasonCode
+          }
+        }
+        videoQualities {
+          sourceURL
+          frameRate
+          quality
+        }
+        id
+        __typename
+      }
+    }`,
+    variables: {
+      slug: clipId,
+      platform: "web",
+      playerType: "pulsar",
+      skipPlayToken: false,
+    },
+  });
 
-  if (!data.data.length) {
+  const request = await fetch("https://gql.twitch.tv/gql", {
+    method: "POST",
+    headers: myHeaders,
+    body: graphql,
+    redirect: "follow",
+  });
+  const response = await request.json();
+
+  const sig = response.data.clip.playbackAccessToken.signature;
+  const videoUrl = response.data.clip.videoQualities[0].sourceURL;
+  const token_raw = response.data.clip.playbackAccessToken.value;
+  const url = `${videoUrl}?token=${encodeURIComponent(token_raw)}&sig=${sig}`;
+  return url;
+};
+
+const CleanDialogVideo = ({ isOpen, closeDialogHandler, videoSrcUrl }) => {
+  return (
+    <Dialog open={isOpen} className=" z-10" onClose={closeDialogHandler}>
+      <div className="fixed inset-0 overflow-y-auto bg-black/20">
+        <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <Dialog.Panel className="overflow-hidden bg-red-100 p-1">
+            <div>
+              {videoSrcUrl ? (
+                <video src={videoSrcUrl} playsInline controls></video>
+              ) : (
+                <div>loading</div>
+                // <video src="" playsInline controls></video>
+              )}
+            </div>
+          </Dialog.Panel>
+        </div>
+      </div>
+    </Dialog>
+  );
+};
+
+const UserClips = ({
+  clipsList,
+  onClipClick,
+}: {
+  clipsList: IClipsListResponse;
+  onClipClick: Function;
+}) => {
+  // @@@ loading state
+  if (!clipsList)
+    return (
+      <span className="grid place-content-center h-full text-xl font-medium">
+        loading
+      </span>
+    );
+  if (!clipsList.data.length) {
     return (
       <span className="grid place-content-center h-full text-xl font-medium">
         Empty, no clips
@@ -69,7 +158,7 @@ const UserClips = ({ user_id }: { user_id: string }) => {
     return new Date(time).toLocaleDateString();
   }
 
-  const something = data.data.map((clip: IClip) => (
+  const something = clipsList.data.map((clip: IClip) => (
     <div key={clip.id}>
       <div className="relative ">
         <div className="absolute bg-yellow-300 w-full h-full -z-10"></div>
@@ -79,7 +168,8 @@ const UserClips = ({ user_id }: { user_id: string }) => {
             alt=""
             width={480}
             height={272}
-            style={{width: '100%', height: 'auto'}}
+            style={{ width: "100%", height: "auto" }}
+            onClick={() => onClipClick(clip.id)}
           />
           <div className="absolute top-0 left-0 m-2 bg-black text-white px-1 py-0.5 text-sm rounded">
             {secondsToTime(clip.duration)}
@@ -110,6 +200,25 @@ const UserClips = ({ user_id }: { user_id: string }) => {
 };
 
 const UserCard = ({ user }: { user: IUserFollow }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [clipId, setClipId] = useState("");
+
+  const { data, error } = useSWR(user.id, getClips);
+  const { data: videoSrcUrl } = useSWR(() => clipId, getClipVideoUrl);
+  // const { data: videoSrcUrl } = useSWR(clipId ? clipId : null, getClipVideoUrl)
+
+  if (error) return <span>Clips An error has occurred.</span>;
+
+  function openDialogHandler(clipId: string) {
+    setClipId((value) => clipId);
+    setIsOpen((value) => true);
+  }
+
+  function closeDialogHandler() {
+    setClipId((value) => "");
+    setIsOpen((value) => false);
+  }
+
   return (
     <>
       <a
@@ -126,7 +235,12 @@ const UserCard = ({ user }: { user: IUserFollow }) => {
         <span>{user.display_name}</span>
       </a>
       {/* @@@ onlybans here */}
-      <UserClips user_id={user.id} />
+      <UserClips clipsList={data} onClipClick={openDialogHandler} />
+      <CleanDialogVideo
+        isOpen={isOpen}
+        closeDialogHandler={closeDialogHandler}
+        videoSrcUrl={videoSrcUrl}
+      />
     </>
   );
 };

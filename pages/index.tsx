@@ -99,7 +99,10 @@ const getClipVideoUrl = async (clipId: string) => {
   const response = await request.json();
 
   const sig = response.data.clip.playbackAccessToken.signature;
-  const videoUrl = response.data.clip.videoQualities[0].sourceURL;
+  const videoUrl =
+    response.data.clip.videoQualities[0].quality === "1080"
+      ? response.data.clip.videoQualities[1].sourceURL
+      : response.data.clip.videoQualities[0].sourceURL;
   const token_raw = response.data.clip.playbackAccessToken.value;
   const url = `${videoUrl}?token=${encodeURIComponent(token_raw)}&sig=${sig}`;
   return url;

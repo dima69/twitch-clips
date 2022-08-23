@@ -35,3 +35,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 todo
+.vscode/settings.json
+public/Screenshot 2022-06-23 172844.png

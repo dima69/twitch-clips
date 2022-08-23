@@ -116,7 +116,7 @@ const CleanDialogVideo = ({ isOpen, closeDialogHandler, videoSrcUrl }) => {
           <Dialog.Panel className="overflow-hidden bg-red-100 p-1">
             <div>
               {videoSrcUrl ? (
-                <video src={videoSrcUrl} playsInline controls></video>
+                <video src={videoSrcUrl} playsInline controls>{"Sorry, your browser doesn't support embedded videos."}</video>
               ) : (
                 <div>loading</div>
                 // <video src="" playsInline controls></video>

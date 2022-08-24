@@ -111,7 +111,7 @@ const getClipVideoUrl = async (clipId: string) => {
 const CleanDialogVideo = ({ isOpen, closeDialogHandler, videoSrcUrl }) => {
   return (
     <Dialog open={isOpen} className=" z-10" onClose={closeDialogHandler}>
-      <div className="fixed inset-0 overflow-y-auto bg-black/20">
+      <div className="fixed inset-0 overflow-y-auto bg-black/80">
         <div className="flex min-h-full items-center justify-center p-4 text-center">
           <Dialog.Panel className="overflow-hidden bg-red-100 p-1">
             <div>

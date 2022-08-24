@@ -118,7 +118,9 @@ const CleanDialogVideo = ({ isOpen, closeDialogHandler, videoSrcUrl }) => {
               {videoSrcUrl ? (
                 <video src={videoSrcUrl} playsInline controls>{"Sorry, your browser doesn't support embedded videos."}</video>
               ) : (
-                <div>loading</div>
+                <div className="h-10 w-10 ">
+                  <LoadingSpinnerIcon />
+                </div>
                 // <video src="" playsInline controls></video>
               )}
             </div>
@@ -139,9 +141,11 @@ const UserClips = ({
   // @@@ loading state
   if (!clipsList)
     return (
-      <span className="grid place-content-center h-full text-xl font-medium">
-        loading
-      </span>
+      <div className="grid place-content-center h-full text-xl font-medium text-black">
+        <div className="h-10 w-10">
+          <LoadingSpinnerIcon />
+        </div>
+      </div>
     );
   if (!clipsList.data.length) {
     return (

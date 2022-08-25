@@ -171,7 +171,7 @@ const UserClips = ({
     <div key={clip.id}>
       <div className="relative ">
         <div className="absolute bg-yellow-300 w-full h-full -z-10"></div>
-        <div className="md:hover:-translate-y-2 md:hover:translate-x-2 transition-all">
+        <div className="md:hover:-translate-y-1.5 md:hover:translate-x-1.5 transition-all">
           <Image
             src={clip.thumbnail_url}
             alt=""

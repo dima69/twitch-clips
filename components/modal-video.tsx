@@ -76,7 +76,7 @@ const ModalVideo = ({ isOpen, onClose, clipId }: Props) => {
   if (!data) {
     return (
       <div className="fixed inset-0 overflow-y-auto bg-black/80">
-        <div className="flex min-h-full items-center justify-center p-4 text-center">
+        <div className="flex min-h-full items-center justify-center p-1 text-center">
           <div className="h-10 w-10 absolute">
             <LoadingSpinnerIcon />
           </div>
@@ -88,7 +88,7 @@ const ModalVideo = ({ isOpen, onClose, clipId }: Props) => {
   return (
     <Dialog open={isOpen} className="z-10" onClose={onClose}>
       <div className="fixed inset-0 overflow-y-auto bg-black/80">
-        <div className="flex min-h-full items-center justify-center p-4 text-center">
+        <div className="flex min-h-full items-center justify-center p-1 text-center">
           <Dialog.Panel className="overflow-hidden bg-white p-0.5">
             <video src={data} playsInline controls>
               {"Sorry, your browser doesn't support embedded videos."}

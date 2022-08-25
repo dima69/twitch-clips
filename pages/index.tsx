@@ -197,7 +197,7 @@ const UserClips = ({
       <div className="flex flex-col">
         <span className="font-semibold">{clip.title}</span>
         <a
-          className="text-sm text-slate-500 hover:underline underline-offset-2 decoration-wavy w-max decoration-red-500 hover:text-black"
+          className="text-sm text-slate-500 hover:underline underline-offset-4 decoration-wavy w-max decoration-red-500 hover:text-black"
           href={`https://twitch.tv/${clip.creator_name}`}
         >
           Clipped by {clip.creator_name}

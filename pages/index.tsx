@@ -22,28 +22,6 @@ const getUserFollows = async (user_id: string) => {
   );
 };
 
-interface IClip {
-  id: string;
-  url: string;
-  embed_url: string;
-  broadcaster_id: string;
-  broadcaster_name: string;
-  creator_id: string;
-  creator_name: string;
-  video_id: string;
-  game_id: string;
-  language: string;
-  title: string;
-  view_count: number;
-  created_at: string;
-  thumbnail_url: string;
-  duration: number;
-  vod_offset: null;
-}
-
-interface IClipsListResponse {
-  data: IClip[];
-}
 
 const getClipVideoUrl = async (clipId: string) => {
   const myHeaders = new Headers();
@@ -254,23 +232,6 @@ const UserCard = ({ user }: { user: IUserFollow }) => {
   );
 };
 
-// @@@ rename it
-interface IUserFollow {
-  id: string;
-  login: string;
-  display_name: string;
-  type: string;
-  broadcaster_type: string;
-  description: string;
-  profile_image_url: string;
-  offline_image_url: string;
-  view_count: string;
-  created_at: string;
-}
-
-interface IUserFollowsListResponse {
-  data: IUserFollow[];
-}
 
 const SideBar = ({
   isOpened,

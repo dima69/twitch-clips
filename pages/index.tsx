@@ -22,54 +22,6 @@ const getUserFollows = async (user_id: string) => {
   );
 };
 
-
-const UserCard = ({ user }: { user: IUserFollow }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [clipId, setClipId] = useState("");
-
-  const { data, error } = useSWR(user.id, getClips);
-  const { data: videoSrcUrl } = useSWR(() => clipId, getClipVideoUrl);
-  // const { data: videoSrcUrl } = useSWR(clipId ? clipId : null, getClipVideoUrl)
-
-  if (error) return <span>Clips An error has occurred.</span>;
-
-  function openDialogHandler(clipId: string) {
-    setClipId((value) => clipId);
-    setIsOpen((value) => true);
-  }
-
-  function closeDialogHandler() {
-    setClipId((value) => "");
-    setIsOpen((value) => false);
-  }
-
-  return (
-    <>
-      <a
-        className="flex my-1 py-1 w-full overflow-auto items-center font-semibold text-3xl hover:underline underline-offset-8 decoration-wavy decoration-red-500"
-        href={`https://twitch.tv/${user.login}`}
-      >
-        <Image
-          src={user.profile_image_url}
-          height={64}
-          width={64}
-          alt=""
-          className="rounded-full mr-2"
-        />
-        <span>{user.display_name}</span>
-      </a>
-      {/* @@@ onlybans here */}
-      <UserClips clipsList={data} onClipClick={openDialogHandler} />
-      <CleanDialogVideo
-        isOpen={isOpen}
-        closeDialogHandler={closeDialogHandler}
-        videoSrcUrl={videoSrcUrl}
-      />
-    </>
-  );
-};
-
-
 const Home: NextPage = () => {
   const { data, error } = useSWR("467997239", getUserFollows);
   const [isSidebarOpened, setIsSidebarOpened] = useState<boolean>(false);

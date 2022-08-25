@@ -233,65 +233,6 @@ const UserCard = ({ user }: { user: IUserFollow }) => {
 };
 
 
-const SideBar = ({
-  isOpened,
-  onUserClick,
-  userFollowsListData,
-}: {
-  isOpened: boolean;
-  onUserClick: Function;
-  userFollowsListData: IUserFollowsListResponse;
-}) => {
-  if (!userFollowsListData) {
-    return (
-      <nav className="hidden md:block md:w-11 h-full bg-gray-100">
-        <div className="flex flex-col">
-          <div className="flex my-1">
-            <div className="px-1 py-1 w-full">
-              <LoadingSpinnerIcon />
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
-  }
-  // @@@ handle it properly
-  // if (usersFollowsList.error) return <span>An error has occurred.</span>;
-
-  return (
-    <nav
-      className={
-        isOpened
-          ? "fixed md:static md:block z-50 md:max-w-max bg-gray-100 h-full overflow-y-auto no-scrollbar"
-          : "hidden md:block md:w-11 h-full bg-gray-100 overflow-y-auto no-scrollbar"
-      }
-    >
-      <div className="flex flex-col">
-        {/* @@@ sort it */}
-        {userFollowsListData.data.map((user) => (
-          <div key={user.id} className="flex my-1">
-            <button
-              className="hover:bg-yellow-300 px-1 py-1 w-full flex items-center"
-              onClick={() => onUserClick(user)}
-            >
-              <Image
-                src={user.profile_image_url}
-                height={36}
-                width={36}
-                className="rounded-full"
-                alt=""
-              />
-              <span className={isOpened ? "ml-2" : "hidden"}>
-                {user.display_name}
-              </span>
-            </button>
-          </div>
-        ))}
-      </div>
-    </nav>
-  );
-};
-
 const Home: NextPage = () => {
   const { data, error } = useSWR("467997239", getUserFollows);
   const [isSidebarOpened, setIsSidebarOpened] = useState<boolean>(false);

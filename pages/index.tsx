@@ -305,33 +305,4 @@ const Home: NextPage = () => {
   );
 };
 
-const UsersGrid = ({
-  userFollowsListData,
-  onClick,
-}: {
-  userFollowsListData: IUserFollowsListResponse;
-  onClick: Function;
-}) => {
-  const { data } = userFollowsListData;
-  const something = data.map((user: IUserFollow) => (
-    <button
-      key={user.id}
-      className="flex items-center p-2 hover:ring-2 ring-yellow-300 rounded"
-      onClick={() => onClick(user)}
-    >
-      <Image
-        src={user.profile_image_url}
-        height={46}
-        width={46}
-        className="rounded-full"
-        alt=""
-      />
-      <span className="font-medium ml-4 text-lg truncate">
-        {user.display_name}
-      </span>
-    </button>
-  ));
-  return <div className="flex flex-col">{something}</div>;
-};
-
 export default Home;

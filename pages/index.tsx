@@ -1,22 +1,18 @@
-import type { NextPage } from "next";
-import { useState } from "react";
-import Image from "next/future/image";
-import useSWR from "swr";
 import {
   PeopleIcon,
   CloseIcon,
   SearchIcon,
   LoadingSpinnerIcon,
 } from "../assets/icons";
-import { Dialog } from "@headlessui/react";
-
-const getClips = (user_id: string) => {
-  console.log("getClips called");
-  return fetch(`/api/getClips?user_id=${user_id}`).then((res) => res.json());
-};
+import { IFollowingUser } from "../interfaces/follower";
+import { useState } from "react";
+import SideBar from "../components/sidebar";
+import type { NextPage } from "next";
+import UserSection from "../components/user-section";
+import UsersGrid from "../components/home-users-grid";
+import useSWR from "swr";
 
 const getUserFollows = async (user_id: string) => {
-  console.log("getUserFollows called");
   return fetch(`/api/getUserFollows?user_id=${user_id}`).then((res) =>
     res.json()
   );
@@ -24,11 +20,15 @@ const getUserFollows = async (user_id: string) => {
 
 const Home: NextPage = () => {
   const { data, error } = useSWR("467997239", getUserFollows);
-  const [isSidebarOpened, setIsSidebarOpened] = useState<boolean>(false);
-  const [selectedUserId, setSelectedUserId] = useState<IUserFollow>();
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [selectedUserId, setSelectedUserId] = useState<IFollowingUser>();
 
   const sideMenuOpenCloseButtonHandler = () => {
-    setIsSidebarOpened((value) => !value);
+    setIsSidebarOpen((value) => !value);
+  };
+
+  const onUserClickHandler = (user: IFollowingUser) => {
+    setSelectedUserId((value) => user);
   };
 
   if (error) return <span>{error}</span>;
@@ -43,7 +43,7 @@ const Home: NextPage = () => {
               title="FOLLOWED CHANNELS"
               className="flex items-center rounded px-1 w-8 h-8 mr-2 text-center bg-yellow-300 md:hover:bg-yellow-400"
             >
-              {isSidebarOpened ? <CloseIcon /> : <PeopleIcon />}
+              {isSidebarOpen ? <CloseIcon /> : <PeopleIcon />}
             </button>
           </div>
           {/* @@@ search */}
@@ -65,28 +65,21 @@ const Home: NextPage = () => {
       {/* transition css */}
       <div className="flex h-[calc(100vh-3rem)]">
         <SideBar
-          isOpened={isSidebarOpened}
-          onUserClick={setSelectedUserId}
-          userFollowsListData={data}
+          isOpen={isSidebarOpen}
+          onUserClick={onUserClickHandler}
+          followingUsersListData={data}
         />
 
         <main className="flex flex-col flex-1 overflow-auto px-2">
           {selectedUserId ? (
             <div key={selectedUserId.id} className="mb-2">
-              <UserCard user={selectedUserId} />
+              <UserSection user={selectedUserId} />
             </div>
           ) : (
-            <div className="mx-auto">
-              {data ? (
-                <UsersGrid
-                  userFollowsListData={data}
-                  onClick={setSelectedUserId}
-                />
-              ) : (
-                // @@@
-                <LoadingSpinnerIcon />
-              )}
-            </div>
+            <UsersGrid
+              followingUsersListData={data}
+              onClick={setSelectedUserId}
+            />
           )}
         </main>
       </div>

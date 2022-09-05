@@ -1,14 +1,4 @@
-import { Dialog } from "@headlessui/react";
-import useSWR from "swr";
-import { LoadingSpinnerIcon } from "../assets/icons";
-
-type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-  clipId: string;
-};
-
-const getClipVideoUrl = async (clipId: string) => {
+export const getClipVideoUrl = async (clipId: string) => {
   const myHeaders = new Headers();
   myHeaders.append("Client-Id", "kimne78kx3ncx6brgo4mv6wki5h1ko");
   myHeaders.append("Content-Type", "application/json");
@@ -71,33 +61,16 @@ const getClipVideoUrl = async (clipId: string) => {
   return url;
 };
 
-const ModalVideo = ({ isOpen, onClose, clipId }: Props) => {
-  const { data } = useSWR(clipId, getClipVideoUrl);
-  if (!data) {
-    return (
-      <div className="fixed inset-0 overflow-y-auto bg-black/80">
-        <div className="flex min-h-full items-center justify-center p-1 text-center">
-          <div className="h-10 w-10 absolute">
-            <LoadingSpinnerIcon />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <Dialog open={isOpen} className="z-10" onClose={onClose}>
-      <div className="fixed inset-0 overflow-y-auto bg-black/80">
-        <div className="flex min-h-full items-center justify-center p-1 text-center">
-          <Dialog.Panel className="overflow-hidden bg-white p-0.5">
-            <video src={data} playsInline controls>
-              {"Sorry, your browser doesn't support embedded videos."}
-            </video>
-          </Dialog.Panel>
-        </div>
-      </div>
-    </Dialog>
+export const getUserFollows = async (user_id: string) => {
+  console.log("getUserFollows called index");
+  return fetch(`/api/getUserFollows?user_id=${user_id}`).then((res) =>
+    res.json()
   );
 };
 
-export default ModalVideo;
+export const getUserInfo = async (username: string) => {
+  console.log("getUserInfo called index");
+  return fetch(`/api/getUserInfo?username=${username}`).then((res) =>
+    res.json()
+  );
+};

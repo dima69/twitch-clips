@@ -1,10 +1,10 @@
-import Image from "next/future/image";
+import { Clip, ClipsListResponse } from "../types/clip";
 import { LoadingSpinnerIcon } from "../assets/icons";
-import { IClip, IClipsListResponse } from "../interfaces/clip";
+import Image from "next/future/image";
 
 type Props = {
-  clipsList: IClipsListResponse;
-  onClipClick: (clip: IClip["id"]) => void;
+  clipsList: ClipsListResponse;
+  onClipClick: (clip: Clip["id"]) => void;
 };
 
 const ClipsGrid = ({ clipsList, onClipClick }: Props) => {
@@ -35,7 +35,7 @@ const ClipsGrid = ({ clipsList, onClipClick }: Props) => {
     return new Date(time).toLocaleDateString();
   }
 
-  const something = clipsList.data.map((clip: IClip) => (
+  const something = clipsList.data.map((clip) => (
     <div key={clip.id}>
       <div className="relative ">
         <div className="absolute bg-yellow-300 w-full h-full -z-10"></div>

@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";
+import Layout from "../components/layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,7 +13,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         revalidateOnReconnect: false,
       }}
     >
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </SWRConfig>
   );
 }

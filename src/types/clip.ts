@@ -1,4 +1,4 @@
-export interface IClip {
+export interface Clip {
   id: string;
   url: string;
   embed_url: string;
@@ -17,6 +17,6 @@ export interface IClip {
   vod_offset: null;
 }
 
-export interface IClipsListResponse {
-  data: IClip[];
+export interface ClipsListResponse {
+  data: Clip[];
 }

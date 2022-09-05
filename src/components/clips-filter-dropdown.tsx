@@ -1,5 +1,5 @@
-import { Menu } from "@headlessui/react";
 import { ChevronDownIcon } from "../assets/icons";
+import { Menu } from "@headlessui/react";
 
 type Props = {
   menuActiveElement: string;

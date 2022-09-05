@@ -1,4 +1,4 @@
-export interface IFollowingUser {
+export interface FollowingUser {
   id: string;
   login: string;
   display_name: string;
@@ -11,6 +11,6 @@ export interface IFollowingUser {
   created_at: string;
 }
 
-export interface IFollowingUsersListResponse {
-  data: IFollowingUser[];
+export interface FollowingUsersResponse {
+  data: FollowingUser[];
 }

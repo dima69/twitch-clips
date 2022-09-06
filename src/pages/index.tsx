@@ -1,8 +1,7 @@
-import { useEffect } from "react";
+import AuthForm from "../components/auth-form";
 import type { NextPage } from "next";
 import UsersGrid from "../components/home-users-grid";
 import useUserStore from "../store/store";
-import AuthForm from "../components/auth-form";
 
 const Home: NextPage = () => {
   const userFollowsData = useUserStore((state) => state.userFollowsData);

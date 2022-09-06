@@ -1,9 +1,9 @@
 import { FollowingUsersResponse } from "../types/follower";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import AuthForm from "./auth-form";
 import Image from "next/future/image";
 import Link from "next/link";
-import AuthForm from "./auth-form";
 
 type Props = {
   isOpen: boolean;

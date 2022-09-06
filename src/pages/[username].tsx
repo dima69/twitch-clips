@@ -2,7 +2,6 @@ import { LoadingSpinnerIcon } from "../assets/icons";
 import { useRouter } from "next/router";
 import UserSection from "../components/user-section";
 import useSWR from "swr";
-import useUserStore from "../store/store";
 
 const getUserInfo = async (username: string) => {
   console.log('getUserInfo [username]')

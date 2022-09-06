@@ -1,9 +1,9 @@
-import Link from "next/link";
-import { useState, ReactNode, FormEvent } from "react";
 import { CloseIcon, PeopleIcon, SearchIcon } from "../assets/icons";
-import useUserStore from "../store/store";
-import SideBar from "./sidebar";
 import { useRouter } from "next/router";
+import { useState, ReactNode, FormEvent } from "react";
+import Link from "next/link";
+import SideBar from "./sidebar";
+import useUserStore from "../store/store";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -25,7 +25,14 @@ const Layout = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div
+      className="flex flex-col"
+      onKeyUp={(e) => {
+        if (e.key === "Escape") {
+          setIsSidebarOpen((value) => false);
+        }
+      }}
+    >
       <header className="flex sticky top-0 p-2 z-20 bg-gray-200 w-full h-12">
         <div className="flex w-full justify-between">
           <div className="flex">

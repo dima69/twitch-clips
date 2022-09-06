@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { LoadingSpinnerIcon } from "../assets/icons";
-import useUserStore from "../store/store";
-import useSWR from "swr";
 import { getUserFollows, getUserInfo } from "../utils/fetchers";
+import { LoadingSpinnerIcon } from "../assets/icons";
+import useSWR from "swr";
+import useUserStore from "../store/store";
 
 
 const AuthForm = () => {

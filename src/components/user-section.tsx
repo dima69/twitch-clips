@@ -2,7 +2,6 @@ import { FollowingUser } from "../types/follower";
 import { getClipVideoUrl } from "../utils/fetchers";
 import { LoadingSpinnerIcon } from "../assets/icons";
 import { useState } from "react";
-import ClipsFilterDropdown from "./clips-filter-dropdown";
 import ClipsGrid from "./clips-grid";
 import Image from "next/future/image";
 import ModalVideo from "./modal-video";

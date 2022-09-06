@@ -8,7 +8,6 @@ type Props = {
 };
 
 const ClipsGrid = ({ clipsList, onClipClick }: Props) => {
-  // @@@ loading state
   if (!clipsList)
     return (
       <div className="grid place-content-center h-full text-xl font-medium text-black">
@@ -38,8 +37,8 @@ const ClipsGrid = ({ clipsList, onClipClick }: Props) => {
   const something = clipsList.data.map((clip) => (
     <div key={clip.id}>
       <div className="relative ">
-        <div className="absolute bg-yellow-300 w-full h-full -z-10"></div>
-        <div className="md:hover:-translate-y-1.5 md:hover:translate-x-1.5 transition-all">
+        <div className="absolute bg-yellow-300 w-full h-full z-auto"></div>
+        <div className="md:hover:-translate-y-1.5 md:hover:translate-x-1.5 transition-all relative">
           <Image
             src={clip.thumbnail_url}
             alt=""
@@ -68,7 +67,7 @@ const ClipsGrid = ({ clipsList, onClipClick }: Props) => {
           className="text-sm text-slate-500 hover:underline underline-offset-4 decoration-wavy w-max decoration-red-500 hover:text-black"
           href={`https://twitch.tv/${clip.creator_name}`}
         >
-          Clipped by {clip.creator_name}
+          {`Clipped by ${clip.creator_name}`}
         </a>
       </div>
     </div>

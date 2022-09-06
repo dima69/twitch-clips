@@ -18,7 +18,6 @@ export default async function handler(
         "Client-ID": `${process.env.CLIENT_ID}`,
       },
     });
-    console.log(response.data);
     res.status(200).json(response.data);
   } catch (error) {
     res.status(400).json(error);

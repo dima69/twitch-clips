@@ -1,30 +1,50 @@
-import { FollowingUser, FollowingUsersResponse } from "../types/follower";
-import { LoadingSpinnerIcon } from "../assets/icons";
-import { useEffect } from "react";
+import { FollowingUsersResponse } from "../types/follower";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/future/image";
 import Link from "next/link";
+import AuthForm from "./auth-form";
 
 type Props = {
   isOpen: boolean;
-  onUserClick(user: FollowingUser): void;
   followingUsersListData: FollowingUsersResponse;
 };
 
-const SideBar = ({ isOpen, onUserClick, followingUsersListData }: Props) => {
-  // @@@ if !auth return null or ask for auth
+type SortVariations = "asc" | "desc";
+
+const SideBar = ({ isOpen, followingUsersListData }: Props) => {
   const router = useRouter();
+  const [sort, setSort] = useState<SortVariations>("asc");
 
-  // @@@ add users to sidebar from search menu, to/from cookies also
+  if (!followingUsersListData.data.length)
+    return (
+      <nav
+        className={
+          isOpen
+            ? "fixed md:static md:block z-50 md:max-w-max bg-gray-100 h-full overflow-y-auto no-scrollbar"
+            : "hidden overflow-y-auto no-scrollbar"
+        }
+      >
+        <div className="flex flex-col">
+          <AuthForm />
+        </div>
+      </nav>
+    );
 
-  if (!followingUsersListData) {
-    // @@@ get from 
-    console.log("daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa loading spinner sidebar")
-    return <></>;
+  function handleSort(sort: SortVariations) {
+    setSort((value) => sort);
   }
-  let sortedData = followingUsersListData.data.sort((a, b) =>
-    a.login.toLowerCase() > b.login.toLowerCase() ? 1 : -1
-  );
+
+  let sortedData;
+  if (sort === "asc") {
+    sortedData = followingUsersListData.data.sort((a, b) =>
+      a.login.toLowerCase() > b.login.toLowerCase() ? 1 : -1
+    );
+  } else {
+    sortedData = followingUsersListData.data.sort((a, b) =>
+      a.login.toLowerCase() > b.login.toLowerCase() ? -1 : 1
+    );
+  }
 
   return (
     <nav
@@ -35,6 +55,31 @@ const SideBar = ({ isOpen, onUserClick, followingUsersListData }: Props) => {
       }
     >
       <div className="flex flex-col">
+        <div className="flex my-1 px-1">
+          {isOpen ? (
+            <div>
+              <span className="text-sm text-gray-600">sort by:</span>
+              <button
+                className={`${
+                  sort === "asc" ? "bg-yellow-300" : "bg-white"
+                } ml-3 py-1 px-3 rounded-lg shadow-sm`}
+                onClick={() => handleSort("asc")}
+              >
+                asc
+              </button>
+              <button
+                className={`${
+                  sort === "desc" ? "bg-yellow-300" : "bg-white"
+                } ml-3 py-1 px-3 rounded-lg shadow-sm`}
+                onClick={() => handleSort("desc")}
+              >
+                desc
+              </button>
+            </div>
+          ) : (
+            <div className="bg-white py-1 h-8"></div>
+          )}
+        </div>
         {sortedData.map((user) => (
           <div key={user.id} className="flex my-1">
             <Link href={user.login}>

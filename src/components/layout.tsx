@@ -1,26 +1,18 @@
 import Link from "next/link";
-import { ChangeEvent, useState, ReactNode, FormEvent } from "react";
+import { useState, ReactNode, FormEvent } from "react";
 import { CloseIcon, PeopleIcon, SearchIcon } from "../assets/icons";
-import { FollowingUser } from "../types/follower";
 import useUserStore from "../store/store";
 import SideBar from "./sidebar";
 import { useRouter } from "next/router";
-import SideBarLogin from "./sidebar-login";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const userFollowsData = useUserStore((state) => state.userFollowsData);
   const [quickSearchValue, setQuickSearchValue] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const sideMenuOpenCloseButtonHandler = () => {
     setIsSidebarOpen((value) => !value);
-  };
-
-  const onUserClickHandler = (user: FollowingUser) => {
-    // setSelectedUserId((value) => user);
-    return;
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -36,8 +28,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <div className="flex flex-col">
       <header className="flex sticky top-0 p-2 z-20 bg-gray-200 w-full h-12">
         <div className="flex w-full justify-between">
-          {router.pathname !== "/" ? (
-            <div className="flex">
+          <div className="flex">
+            {router.asPath === "/" && !userFollowsData.data.length ? null : (
               <button
                 onClick={sideMenuOpenCloseButtonHandler}
                 title="FOLLOWED CHANNELS"
@@ -45,11 +37,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
               >
                 {isSidebarOpen ? <CloseIcon /> : <PeopleIcon />}
               </button>
-            </div>
-          ) : (
-            <div></div>
-          )}
-          {/* @@@ characters left 4 3 2 1 */}
+            )}
+          </div>
           <div className="flex w-96">
             <form onSubmit={handleSubmit} className="w-full">
               <input
@@ -70,22 +59,16 @@ const Layout = ({ children }: { children: ReactNode }) => {
               </a>
             </Link>
           </div>
-          {/* @@@ twitch auth button */}
           <div></div>
         </div>
       </header>
       {/* ESC key close event */}
       {/* transition css */}
       <div className="flex h-[calc(100vh-3rem)]">
-        {router.pathname !== "/" && userFollowsData.data.length ? (
-          <SideBar
-            isOpen={isSidebarOpen}
-            onUserClick={onUserClickHandler}
-            followingUsersListData={userFollowsData}
-          />
-        ) : (
-          <SideBarLogin isOpen={isSidebarOpen} />
-        )}
+        <SideBar
+          isOpen={isSidebarOpen}
+          followingUsersListData={userFollowsData}
+        />
 
         <main className="flex flex-col flex-1 overflow-auto px-2">
           {children}

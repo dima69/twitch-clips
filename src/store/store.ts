@@ -8,7 +8,7 @@ interface UserState {
   userFollowsData: FollowingUsersResponse;
   toggleIsAuth: () => void;
   setUsername: (username: string) => void;
-  setUserFollowsData: (data: any) => void;
+  setUserFollowsData: (data: FollowingUsersResponse) => void;
   globalVolume: number;
   setGlobalVolume: (volume: number) => void;
   setVideoMuted: (muted: boolean) => void;

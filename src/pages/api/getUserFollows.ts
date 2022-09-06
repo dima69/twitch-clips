@@ -35,7 +35,6 @@ export default async function handler(
         id: array_of_ids,
       },
     });
-    console.log(response2.data)
     res.status(200).json(response2.data);
   } catch (error) {
     console.log("something is wrong... falling back to mock data");

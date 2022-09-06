@@ -17,10 +17,12 @@ const getClips = (user_id: string) => {
   return fetch(`/api/getClips?user_id=${user_id}`).then((res) => res.json());
 };
 
+type TopFilter = "24h" | "7d" | "30d" | "all";
+
 const UserSection = ({ user }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [clipId, setClipId] = useState<null | string>(null);
-  const [selectedRange, setSelectedRange] = useState("24hr");
+  const [topFilter, setTopFilter] = useState<TopFilter>("24h");
 
   const { data, error } = useSWR(user.id, getClips);
 
@@ -42,9 +44,8 @@ const UserSection = ({ user }: Props) => {
     setIsOpen((value) => false);
   }
 
-  const handleSelectedRange = (range: string) => {
-    setSelectedRange((value) => range);
-    console.log("selected range is: ", selectedRange);
+  const handleTopFilter = (range: TopFilter) => {
+    setTopFilter((value) => range);
   };
 
   return (
@@ -62,10 +63,41 @@ const UserSection = ({ user }: Props) => {
         />
         <span>{user.display_name}</span>
       </a>
-      <ClipsFilterDropdown
-        menuActiveElement={"30D"}
-        selectedRange={handleSelectedRange}
-      />
+      <div className="my-2">
+        <span className="text-gray-600">top:</span>
+        <button
+          className={`${
+            topFilter === "24h" ? "bg-yellow-300" : "bg-white"
+          } ml-3 py-1 px-3 rounded-lg shadow-sm border`}
+          onClick={() => handleTopFilter("24h")}
+        >
+          24H
+        </button>
+        <button
+          className={`${
+            topFilter === "7d" ? "bg-yellow-300" : "bg-white"
+          } ml-3 py-1 px-3 rounded-lg shadow-sm border`}
+          onClick={() => handleTopFilter("7d")}
+        >
+          7d
+        </button>
+        <button
+          className={`${
+            topFilter === "30d" ? "bg-yellow-300" : "bg-white"
+          } ml-3 py-1 px-3 rounded-lg shadow-sm border`}
+          onClick={() => handleTopFilter("30d")}
+        >
+          30d
+        </button>
+        <button
+          className={`${
+            topFilter === "all" ? "bg-yellow-300" : "bg-white"
+          } ml-3 py-1 px-3 rounded-lg shadow-sm border`}
+          onClick={() => handleTopFilter("all")}
+        >
+          ALL
+        </button>
+      </div>
       {/* @@@ onlybans here */}
       <ClipsGrid clipsList={data} onClipClick={openDialogHandler} />
       {videoSrcUrl ? (

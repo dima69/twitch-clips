@@ -13,6 +13,7 @@ const getUserInfo = async (username: string) => {
 
 const UserPage = () => {
   // @@@ use effect check if data in zustand else useRouter
+  // don't 
 
   const router = useRouter();
   const { data, error } = useSWR(router.query.username, getUserInfo);

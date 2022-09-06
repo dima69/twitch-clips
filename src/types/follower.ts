@@ -1,14 +1,14 @@
 export interface FollowingUser {
+  broadcaster_type: string;
+  created_at: string;
+  description: string;
+  display_name: string;
   id: string;
   login: string;
-  display_name: string;
-  type: string;
-  broadcaster_type: string;
-  description: string;
-  profile_image_url: string;
   offline_image_url: string;
+  profile_image_url: string;
+  type: string;
   view_count: string;
-  created_at: string;
 }
 
 export interface FollowingUsersResponse {

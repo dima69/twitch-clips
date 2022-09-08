@@ -2,6 +2,7 @@ import { LoadingSpinnerIcon } from "../assets/icons";
 import { useRouter } from "next/router";
 import UserSection from "../components/user-section";
 import useSWR from "swr";
+import { useEffect } from "react";
 
 const getUserInfo = async (username: string) => {
   console.log("API fetch: getUserInfo [username] called");
@@ -12,21 +13,22 @@ const getUserInfo = async (username: string) => {
 
 const UserPage = () => {
   const router = useRouter();
-  const { username } = router.query;
-  console.log("router.query [username]", router.query.top);
+  const { username, top } = router.query;
 
-  if (username) {
-    if (!router.query.top) {
-      router.replace(
-        {
-          pathname: "/[username]",
-          query: { username, top: "24h" },
-        },
-        undefined,
-        { shallow: true }
-      );
+  useEffect(() => {
+    if (username) {
+      if (!top) {
+        router.replace(
+          {
+            pathname: "/[username]",
+            query: { username, top: "24h" },
+          },
+          undefined,
+          { shallow: true }
+        );
+      }
     }
-  }
+  }, [username, top, router]);
 
   const { data, error } = useSWR(username, getUserInfo);
   if (!data)

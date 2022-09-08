@@ -53,7 +53,7 @@ const UserSection = ({ user }: Props) => {
     router.replace(
       {
         pathname: `/[username]`,
-        query: { username: router.query.username, top: range },
+        query: { top: range },
       },
       undefined,
       { shallow: true }

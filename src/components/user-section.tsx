@@ -15,10 +15,9 @@ type Props = {
 type TopFilter = "24h" | "7d" | "30d" | "all";
 
 const getClips = (user_id: string, topFilter: TopFilter) => {
-  console.log("getClips called user-section");
-  return fetch(`/api/getClips?user_id=${user_id}&top=${topFilter}`).then(
-    (res) => res.json()
-  );
+  let url = `/api/getClips?user_id=${user_id}&top=${topFilter}`;
+  console.log("API fetch: getClips, ", url);
+  return fetch(url).then((res) => res.json());
 };
 
 const UserSection = ({ user }: Props) => {
@@ -49,6 +48,7 @@ const UserSection = ({ user }: Props) => {
   }
 
   const handleTopFilter = (range: TopFilter) => {
+    if (router.query.top === range) return;
     setTopFilter((value) => range);
     router.replace(
       {

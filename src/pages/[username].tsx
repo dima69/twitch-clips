@@ -4,18 +4,31 @@ import UserSection from "../components/user-section";
 import useSWR from "swr";
 
 const getUserInfo = async (username: string) => {
-  console.log('getUserInfo [username]')
+  console.log("API fetch: getUserInfo [username] called");
   return fetch(`/api/getUserInfo?username=${username}`).then((res) =>
     res.json()
   );
 };
 
 const UserPage = () => {
-  // @@@ use effect check if data in zustand else useRouter
-  // don't 
-
   const router = useRouter();
-  const { data, error } = useSWR(router.query.username, getUserInfo);
+  const { username } = router.query;
+  console.log("router.query [username]", router.query.top);
+
+  if (username) {
+    if (!router.query.top) {
+      router.replace(
+        {
+          pathname: "/[username]",
+          query: { username, top: "24h" },
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+  }
+
+  const { data, error } = useSWR(username, getUserInfo);
   if (!data)
     return (
       <div className="h-6 w-6">

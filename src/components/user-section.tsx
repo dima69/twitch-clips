@@ -1,6 +1,7 @@
 import { FollowingUser } from "../types/follower";
 import { getClipVideoUrl } from "../utils/fetchers";
 import { LoadingSpinnerIcon } from "../assets/icons";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import ClipsGrid from "./clips-grid";
 import Image from "next/future/image";
@@ -11,19 +12,23 @@ type Props = {
   user: FollowingUser;
 };
 
-const getClips = (user_id: string) => {
-  console.log("getClips called user-section");
-  return fetch(`/api/getClips?user_id=${user_id}`).then((res) => res.json());
-};
-
 type TopFilter = "24h" | "7d" | "30d" | "all";
 
+const getClips = (user_id: string, topFilter: TopFilter) => {
+  console.log("getClips called user-section");
+  return fetch(`/api/getClips?user_id=${user_id}&top=${topFilter}`).then(
+    (res) => res.json()
+  );
+};
+
 const UserSection = ({ user }: Props) => {
+  const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
   const [clipId, setClipId] = useState<null | string>(null);
   const [topFilter, setTopFilter] = useState<TopFilter>("24h");
 
-  const { data, error } = useSWR(user.id, getClips);
+  const { data, error } = useSWR([user.id, topFilter], getClips);
 
   // @@@ videoSrcUrl is already fetched, keep it
   const { data: videoSrcUrl, isValidating } = useSWR(
@@ -45,6 +50,14 @@ const UserSection = ({ user }: Props) => {
 
   const handleTopFilter = (range: TopFilter) => {
     setTopFilter((value) => range);
+    router.replace(
+      {
+        pathname: `/[username]`,
+        query: { username: router.query.username, top: range },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   return (

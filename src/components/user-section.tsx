@@ -52,8 +52,7 @@ const UserSection = ({ user }: Props) => {
     setTopFilter((value) => range);
     router.replace(
       {
-        pathname: `/[username]`,
-        query: { top: range },
+        query: { username: router.query.username, top: range },
       },
       undefined,
       { shallow: true }

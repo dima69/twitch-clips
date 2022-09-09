@@ -4,7 +4,6 @@ import { LoadingSpinnerIcon } from "../assets/icons";
 import useSWR from "swr";
 import useUserStore from "../store/store";
 
-
 const AuthForm = () => {
   const username = useUserStore((state) => state.username);
   const [targetUsername, setTargetUsername] = useState("dima_dima69");
@@ -31,7 +30,6 @@ const AuthForm = () => {
 
   if (userInfoError) return <span>{userInfoError}</span>;
 
-
   const hanleTargetUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     // @@@ ??? why
     if (e.currentTarget.value.length <= 25) {
@@ -47,12 +45,14 @@ const AuthForm = () => {
   return (
     <div className="grid place-content-center h-full mx-3 mt-4">
       <div className="flex flex-col items-center">
-        <button
+        <a
+          target="_blank"
+          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           className="bg-purple-500 text-white rounded-lg py-3 px-4 max-w-max disabled:bg-gray-300"
-          disabled={userInfoValidating || userFollowsValidating}
+          rel="noopener noreferrer"
         >
           Auth with Twitch
-        </button>
+        </a>
       </div>
       <span className="text-center my-6">
         OR input your username to get your follows:

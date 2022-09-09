@@ -87,7 +87,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   console.log("getUserFollows api called");
-  let { user_id } = req.query;
+  const user_id = String(req.query.user_id);
   try {
     const response = await getFollows(user_id);
     res.status(200).json(response);
